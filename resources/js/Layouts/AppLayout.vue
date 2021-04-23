@@ -20,7 +20,7 @@
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </jet-nav-link>
-                                <jet-nav-link :href="route('channels.index')" :active="route().current('channels.index')">
+                                <jet-nav-link :href="route('radios.index')" :active="route().current('radios.index')">
                                     Radios
                                 </jet-nav-link>
                                 <jet-nav-link :href="route('channels.index')" :active="route().current('channels.index')">

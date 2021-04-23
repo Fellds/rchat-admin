@@ -28,7 +28,10 @@
     import AppLayout from '@/Layouts/AppLayout';
     import JetApplicationLogo from '@/Jetstream/ApplicationLogo';
 
-    export default {
+    export default { 
+        props: {
+            channels: Array
+        },
         components: {
             AppLayout,
             JetApplicationLogo,

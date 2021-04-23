@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
-// use App\Http\Repositories\Contracts\ChannelRepositoryInterface;
+use App\Http\Repositories\Contracts\RadioRepositoryInterface;
 
-class ChannelController extends CrudController
+class RadioController extends CrudController
 {
-    private $channelRepository;
+    private $radioRepository;
 
     protected $viewName = "radios";
 
     function __construct(
-        // ChannelRepositoryInterface $channelRepository
+        RadioRepositoryInterface $radioRepository
     ) {
-        // $this->channelRepository = $channelRepository;
+        $this->radioRepository = $radioRepository;
     }
 
     public function index()
     {
-        // $channels = $this->channelRepository->all();
+        $radios = $this->radioRepository->all();
 
-        // return parent::renderIndex([
-        //     "channels" => $channels,
-        // ]);
+        return parent::renderIndex([
+            "radios" => $radios,
+        ]);
     }
 
     public function create()

@@ -2,7 +2,7 @@
 
 namespace App\Http\Repositories\Contracts;
 
-interface ChannelRepositoryInterface
+interface RadioRepositoryInterface
 {
     function findById($id);
 }
