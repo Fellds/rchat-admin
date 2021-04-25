@@ -9,7 +9,40 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    a
+                    <div class="p-2">
+                        <radio-creation @created="created">
+                            <jet-button type="button">
+                                Create new Radio
+                            </jet-button>
+                        </radio-creation>
+                    </div>
+
+                    <table class="table-fixed w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-2 w-20 text-right">#</th>
+                                <th class="px-4 py-2">Name</th>
+                                <th class="px-4 py-2 w-40 text-right">Frequency</th>
+                                <th class="px-4 py-2 w-48">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="radio in radios" v-bind:key="radio.id">
+                                <td class="border px-4 py-2 text-right">{{radio.id}}</td>
+                                <td class="border px-4 py-2">{{radio.name}}</td>
+                                <td class="border px-4 py-2 text-right">{{radio.frequency}}</td>
+                                <td class="border px-4 py-2">
+                                    <radio-editing @edited="edited" :radio_id="radio.id">
+                                        <jet-button type="button">
+                                            Edit
+                                        </jet-button>
+                                    </radio-editing>
+                                    <jet-danger-button class="ml-1">Delete</jet-danger-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
@@ -18,10 +51,36 @@
 
 <script>
     import AppLayout from '@/Layouts/AppLayout'
+    import JetButton from '@/Jetstream/Button'
+    import JetDangerButton from '@/Jetstream/DangerButton'
+    import RadioCreation from '@/Components/Radio/RadioCreation'
+    import RadioEditing from '@/Components/Radio/RadioEditing'
 
     export default {
+        props: {
+            radios: Array,
+        },
+
         components: {
             AppLayout,
+            JetButton,
+            JetDangerButton,
+            RadioCreation,
+            RadioEditing,
         },
+
+        methods: {
+            created(created) {
+                this.radios.push(created)
+            },
+
+            edited(edited) {
+                let index = this.radios.findIndex((radio => radio.id == edited.id));
+                console.log(edited.id);
+                this.radios[index].name = edited.name
+                this.radios[index].frequency = edited.frequency
+                this.radios[index].logo = edited.logo
+            }
+        }
     }
 </script>

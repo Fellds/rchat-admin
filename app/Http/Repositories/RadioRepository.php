@@ -19,4 +19,14 @@ class RadioRepository extends BaseRepository implements RadioRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
+
+    public function update(Radio $radio, $data)
+    {
+        $radio->name = $data['name'];
+        $radio->frequency = $data['frequency'];
+        $radio->logo = $data['logo'];
+        $radio->save();
+
+        return $radio;
+    }
 }

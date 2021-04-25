@@ -16,8 +16,8 @@ class CreateRadiosTable extends Migration
         Schema::create('radios', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
-            $table->string('frequency', 6);
-            $table->string('logo', 150);
+            $table->decimal('frequency', 4,1);
+            $table->string('logo', 150)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

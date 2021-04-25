@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RadioCreateRequest;
+use App\Http\Requests\RadioUpdateRequest;
+
 use App\Http\Repositories\Contracts\RadioRepositoryInterface;
+use App\Models\Radio;
 
 class RadioController extends CrudController
 {
@@ -27,10 +31,40 @@ class RadioController extends CrudController
 
     public function create()
     {
-        // $channels = $this->channelRepository->all();
+        return parent::renderCreate();
+    }
 
-        // return parent::renderCreate([
-        //     "channels" => $channels,
-        // ]);
+    public function store(RadioCreateRequest $request)
+    {
+        $radio = $this->radioRepository->create([
+            'name' => $request->radio_name,
+            'frequency' => $request->frequency,
+            'logo' => $request->logo, 
+        ]);
+
+        return [
+            'id' => $radio->id,
+            'name' => $radio->name,
+            'frequency' => $radio->frequency
+        ];
+    }
+
+    public function show(Radio $radio)
+    {
+        return $radio;
+    }
+
+    public function update(RadioUpdateRequest $request, Radio $radio)
+    {
+        $updated = $this->radioRepository->update(
+            $radio,
+            [
+                'name' => $request->radio_name,
+                'frequency' => $request->frequency,
+                'logo' => $request->logo, 
+            ]
+        );
+
+        return $updated;
     }
 }
