@@ -15,6 +15,7 @@ class CreateChannelsTable extends Migration
     {
         Schema::create('channels', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->unsignedBigInteger('radio_id');
             $table->timestamps();
             $table->softDeletes();

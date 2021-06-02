@@ -1,10 +1,10 @@
 <template>
     <span>
-        <span @click="startCreatingRadio">
+        <span @click="startCreatingChannel">
             <slot />
         </span>
 
-        <jet-dialog-modal :show="creatingRadio" @close="closeModal">
+        <jet-dialog-modal :show="creatingChannel" @close="closeModal">
             <template #title>
                 {{ title }}
             </template>
@@ -12,33 +12,23 @@
             <template #content>
                 
                 <div class="col-span-6 sm:col-span-4">
-                    <jet-label for="radio_name" value="Radio Name" />
-                    <jet-input id="radio_name" type="text" class="mt-1 block w-full" placeholder="Radio Name"
-                                ref="radio_name"
-                                v-model="form.radio_name"
+                    <jet-label for="name" value="Channel Name" />
+                    <jet-input id="name" type="text" class="mt-1 block w-full" placeholder="Channel Name"
+                                ref="name"
+                                v-model="form.name"
                                 />
-                    <jet-input-error v-if="form.errors.radio_name != undefined"  :message="form.errors.radio_name[0]" class="mt-2" />
+                    <jet-input-error v-if="form.errors.name != undefined"  :message="form.errors.name[0]" class="mt-2" />
                 </div>
 
                 <div class="col-span-6 sm:col-span-4 mt-2">
-                    <jet-label for="frequency" value="Frequency" />
-                    <jet-input id="frequency" type="number" class="mt-1 block w-full" placeholder="Frequency"
-                                min="0"
-                                step="0.1"
-                                ref="frequency"
-                                v-model="form.frequency"
+                    <jet-label for="radio_id" value="Radio" />
+                    <jet-input id="radio_id" type="text" class="mt-1 block w-full" placeholder="Radio"
+                                ref="radio_id"
+                                v-model="form.radio_id"
                                 />
-                    <jet-input-error v-if="form.errors.frequency != undefined" :message="form.errors.frequency[0]" class="mt-2" />
+                    <jet-input-error v-if="form.errors.radio_id != undefined"  :message="form.errors.radio_id[0]" class="mt-2" />
                 </div>
 
-                <div class="col-span-6 sm:col-span-4 mt-2">
-                    <jet-label for="logo" value="Logo" />
-                    <jet-input id="logo" type="file"
-                                ref="logo"
-                                v-model="form.logo"
-                                />
-                    <jet-input-error :message="form.errors.logo" class="mt-2" />
-                </div>
             </template>
 
             <template #footer>
@@ -46,7 +36,7 @@
                     Cancel
                 </jet-secondary-button>
 
-                <jet-button class="ml-2" @click="createRadio">
+                <jet-button class="ml-2" @click="createChannel">
                     {{ button }}
                 </jet-button>
             </template>
@@ -67,7 +57,7 @@
         
         props: {
             title: {
-                default: 'Create New Radio',
+                default: 'Create New Channel',
             },
             button: {
                 default: 'Create',
@@ -85,39 +75,34 @@
 
         data() {
             return {
-                creatingRadio: false,
+                creatingChannel: false,
                 form: {
-                    radio_name: '',
-                    frequency: '',
+                    name: '',
                     errors: {
-                        radio_name: '',
-                        frequency: '',
-                        logo: '',
+                        name: '',
                     },
                 },
             }
         },
 
         methods: {
-            startCreatingRadio() {
-                this.creatingRadio = true
+            startCreatingChannel() {
+                this.creatingChannel = true
             },
 
             closeModal() {
-                this.creatingRadio = false
-                this.form.radio_name = ''
-                this.form.frequency = ''
-                this.form.logo = ''
+                this.creatingChannel = false
+                this.form.name = ''
+                this.form.radio_id = ''
                 this.form.error = ''
             },
 
-            createRadio() {
+            createChannel() {
                 this.form.processing = true;
 
-                axios.post(route('radios.store'), {
-                    radio_name: this.form.radio_name,
-                    frequency: this.form.frequency,
-                    logo: this.form.logo,
+                axios.post(route('channels.store'), {
+                    name: this.form.name,
+                    radio_id: this.form.radio_id,
                 }).then((created) => {
                     this.form.processing = false;
                     this.closeModal()
@@ -126,7 +111,7 @@
                         {
                             id: created.data.id,
                             name: created.data.name,
-                            frequency: created.data.frequency
+                            radio_id: created.data.radio_id,
                         }
                     ))
                 }).catch(error => {

@@ -19,4 +19,13 @@ class ChannelRepository extends BaseRepository implements ChannelRepositoryInter
     {
         return $this->model->findOrFail($id);
     }
+
+    public function update(Channel $channel, $data)
+    {
+        $channel->name = $data['name'];
+        $channel->radio_id = $data['radio_id'];
+        $channel->save();
+
+        return $channel;
+    }
 }

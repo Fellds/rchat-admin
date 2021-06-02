@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChannelCreateRequest;
+use App\Http\Requests\ChannelUpdateRequest;
+
 use App\Http\Repositories\Contracts\ChannelRepositoryInterface;
+use App\Models\Channel;
 
 class ChannelController extends CrudController
 {
@@ -25,12 +29,44 @@ class ChannelController extends CrudController
         ]);
     }
 
-    public function create()
+    public function store(ChannelCreateRequest $request)
     {
-        $channels = $this->channelRepository->all();
-
-        return parent::renderCreate([
-            "channels" => $channels,
+        $channel = $this->channelRepository->create([
+            'name' => $request->name, 
+            'radio_id' => $request->radio_id, 
         ]);
+
+        return [
+            'id' => $channel->id,
+            'name' => $channel->name,
+            'radio_id' => $channel->radio_id
+        ];
+    }
+
+    public function show(Channel $channel)
+    {
+        return $channel;
+    }
+
+    public function update(ChannelUpdateRequest $request, Channel $channel)
+    {
+        $updated = $this->channelRepository->update(
+            $channel,
+            [
+                'name' => $request->name,
+                'radio_id' => $request->radio_id, 
+            ]
+        );
+
+        return $updated;
+    } 
+
+    public function destroy(Channel $channel)
+    {
+        $this->channelRepository->destroy($channel->id);
+        
+        return [
+            'id' => $channel->id,
+        ];
     }
 }

@@ -37,7 +37,11 @@
                                             Edit
                                         </jet-button>
                                     </radio-editing>
-                                    <jet-danger-button class="ml-1">Delete</jet-danger-button>
+                                    <radio-deletion @deleted="deleted" :radio_id="radio.id">
+                                        <jet-danger-button class="ml-1" type="button">
+                                            Delete
+                                        </jet-danger-button>
+                                    </radio-deletion>
                                 </td>
                             </tr>
                         </tbody>
@@ -55,6 +59,7 @@
     import JetDangerButton from '@/Jetstream/DangerButton'
     import RadioCreation from '@/Components/Radio/RadioCreation'
     import RadioEditing from '@/Components/Radio/RadioEditing'
+    import RadioDeletion from '@/Components/Radio/RadioDeletion'
 
     export default {
         props: {
@@ -67,6 +72,7 @@
             JetDangerButton,
             RadioCreation,
             RadioEditing,
+            RadioDeletion,
         },
 
         methods: {
@@ -76,10 +82,14 @@
 
             edited(edited) {
                 let index = this.radios.findIndex((radio => radio.id == edited.id));
-                console.log(edited.id);
                 this.radios[index].name = edited.name
                 this.radios[index].frequency = edited.frequency
                 this.radios[index].logo = edited.logo
+            },
+
+            deleted(deleted) {
+                let index = this.radios.findIndex((radio => radio.id == deleted.id));
+                this.radios.splice(index, 1);
             }
         }
     }

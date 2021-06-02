@@ -29,11 +29,6 @@ class RadioController extends CrudController
         ]);
     }
 
-    public function create()
-    {
-        return parent::renderCreate();
-    }
-
     public function store(RadioCreateRequest $request)
     {
         $radio = $this->radioRepository->create([
@@ -66,5 +61,14 @@ class RadioController extends CrudController
         );
 
         return $updated;
+    } 
+    
+    public function destroy(Radio $radio)
+    {
+        $this->radioRepository->destroy($radio->id);
+        
+        return [
+            'id' => $radio->id,
+        ];
     }
 }

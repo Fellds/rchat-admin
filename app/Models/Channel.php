@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Channel extends Model
 {
     protected $fillable = [
-        'radio_id',
+        'name', 'radio_id',
     ];
 
     /**

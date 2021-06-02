@@ -1,10 +1,10 @@
 <template>
     <span>
-        <span @click="startEditingRadio">
+        <span @click="startEditingChannel">
             <slot />
         </span>
 
-        <jet-dialog-modal :show="editingRadio" @close="closeModal">
+        <jet-dialog-modal :show="editingChannel" @close="closeModal">
             <template #title>
                 {{ title }}
             </template>
@@ -12,33 +12,25 @@
             <template #content>
                 
                 <div class="col-span-6 sm:col-span-4">
-                    <jet-label for="radio_name" value="Radio Name" />
-                    <jet-input id="radio_name" type="text" class="mt-1 block w-full" placeholder="Radio Name"
-                                ref="radio_name"
-                                v-model="form.radio_name"
+                    <jet-label for="name" value="Channel Name" />
+                    <jet-input id="name" type="text" class="mt-1 block w-full" placeholder="Channel Name"
+                                ref="name"
+                                v-model="form.name"
                                 />
-                    <jet-input-error v-if="form.errors.radio_name != undefined" :message="form.errors.radio_name[0]" class="mt-2" />
+                    <jet-input-error v-if="form.errors.name != undefined" :message="form.errors.name[0]" class="mt-2" />
                 </div>
 
                 <div class="col-span-6 sm:col-span-4 mt-2">
-                    <jet-label for="frequency" value="Frequency" />
-                    <jet-input id="frequency" type="number" class="mt-1 block w-full" placeholder="Frequency"
+                    <jet-label for="radio_id" value="Radio" />
+                    <jet-input id="radio_id" type="number" class="mt-1 block w-full" placeholder="Radio"
                                 min="0"
                                 step="0.1"
-                                ref="frequency"
-                                v-model="form.frequency"
+                                ref="radio_id"
+                                v-model="form.radio_id"
                                 />
-                    <jet-input-error v-if="form.errors.frequency != undefined" :message="form.errors.frequency[0]" class="mt-2" />
+                    <jet-input-error v-if="form.errors.radio_id != undefined" :message="form.errors.radio_id[0]" class="mt-2" />
                 </div>
 
-                <div class="col-span-6 sm:col-span-4 mt-2">
-                    <jet-label for="logo" value="Logo" />
-                    <jet-input id="logo" type="file"
-                                ref="logo"
-                                v-model="form.logo"
-                                />
-                    <jet-input-error v-if="form.errors.logo != undefined" :message="form.errors.logo" class="mt-2" />
-                </div>
             </template>
 
             <template #footer>
@@ -46,7 +38,7 @@
                     Cancel
                 </jet-secondary-button>
 
-                <jet-button class="ml-2" @click="editRadio">
+                <jet-button class="ml-2" @click="editChannel">
                     {{ button }}
                 </jet-button>
             </template>
@@ -66,12 +58,12 @@
         emits: ['edited'],
         
         props: {
-            radio_id: {
+            channel_id: {
                 type: Number,
                 required: true,
             },
             title: {
-                default: 'Edit Radio',
+                default: 'Edit Channel',
             },
             button: {
                 default: 'Edit',
@@ -89,42 +81,39 @@
 
         data() {
             return {
-                editingRadio: false,
+                editingChannel: false,
                 form: {
-                    radio_name: '',
-                    frequency: '',
+                    name: '',
+                    radio_id: '',
                     errors: {
-                        radio_name: '',
-                        frequency: '',
-                        logo: '',
+                        name: '',
+                        radio_id: '',
                     },
                 },
             }
         },
 
         methods: {
-            startEditingRadio() {
-                this.editingRadio = true
+            startEditingChannel() {
+                this.editingChannel = true
 
-                axios.get(route('radios.show', this.$props.radio_id), {
+                axios.get(route('channels.show', this.$props.channel_id), {
                 }).then((radio) => {
                     this.form.processing = false;
-                    this.form.radio_name = radio.data.name
-                    this.form.frequency = radio.data.frequency
-                    this.form.logo = radio.data.logo
+                    this.form.name = radio.data.name
+                    this.form.radio_id = radio.data.radio_id
                 }).catch(error => {
                     this.form.processing = false;
                     this.form.errors = error.response.data.errors
                 });
             },
 
-            editRadio() {
+            editChannel() {
                 this.form.processing = true;
 
-                axios.put(route('radios.update', this.$props.radio_id), {
-                    radio_name: this.form.radio_name,
-                    frequency: this.form.frequency,
-                    logo: this.form.logo,
+                axios.put(route('channels.update', this.$props.channel_id), {
+                    name: this.form.name,
+                    radio_id: this.form.radio_id,
                 }).then((edited) => {
                     this.form.processing = false
                     this.closeModal()
@@ -133,8 +122,7 @@
                         {
                             id: edited.data.id,
                             name: edited.data.name,
-                            frequency: edited.data.frequency,
-                            logo: edited.data.logo,
+                            radio_id: edited.data.radio_id,
                         }
                     ))
                 }).catch(error => {
@@ -145,11 +133,10 @@
             },
 
             closeModal() {
-                this.editingRadio = false
-                this.form.radio_name = ''
-                this.form.frequency = ''
-                this.form.logo = ''
-                this.form.error = ''
+                this.editingChannel = false
+                this.form.name = ''
+                this.form.radio_id = ''
+                this.form.errors = ''
             },
         }
     }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RadioCreateRequest extends FormRequest
+class ChannelCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class RadioCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'radio_name' => 'required|string',
-            'frequency' => 'required|numeric|lte:9999,99',
-            'logo' => 'sometimes|nullable',
+            'name' => 'required',
+            'radio_id' => 'required',
         ];
     }
 }
